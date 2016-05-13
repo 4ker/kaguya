@@ -1,17 +1,27 @@
 cmake_minimum_required(VERSION 2.6)
 project(Kaguya)
 
-include(cmake/FindLua.cmake)
+find_package( Boost REQUIRED )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
+set( Boost_USE_STATIC_LIBS        OFF )
+set( Boost_USE_MULTITHREADED      ON )
+set( Boost_USE_STATIC_RUNTIME     OFF )
+set( BOOST_ALL_DYN_LINK           ON ) # force dynamic linking for all libraries
+# target_link_libraries( ${PROJECT_NAME} ${Boost_LIBRARIES} )
 
-include_directories(${LUA_INCLUDE_DIRS})
-link_directories(${LUA_LIBRARY_DIRS})
-include_directories("include")
+set( LUA_LIBRARIES lua )
+set( LUA_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rdParty/lua ) # lua5.3
+include_directories( ${LUA_INCLUDE_DIR} )
+# link_directories(${LUA_LIBRARY_DIRS})
+add_subdirectory( 3rdParty )
+
+include_directories( "include" )
 
 file(GLOB KAGUYA_HEADER RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  include/kaguya/*.hpp
-  include/kaguya/detail/*.hpp)
-
-include_directories("./")
+    include/kaguya/*.hpp
+    include/kaguya/detail/*.hpp)
+include_directories( ${CMAKE_SOURCE_DIR} )
 
 if(ADDITIONAL_INCLUDE_PATH)
 include_directories(${ADDITIONAL_INCLUDE_PATH})
@@ -44,7 +54,6 @@ endif()
 
 file(GLOB TEST_SRCS files RELATIVE ${CMAKE_SOURCE_DIR} test/*.cpp)
 
-link_directories(${LUA_LIBRARY_DIRS})
 add_executable(test_runner
 				${TEST_SRCS} ${KAGUYA_HEADER})
 target_link_libraries(test_runner ${LUA_LIBRARIES})

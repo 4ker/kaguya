@@ -3,3 +3,5 @@ lua-*
 *.exe
 *.dll
 LuaJIT-*
+build/*
+*~
