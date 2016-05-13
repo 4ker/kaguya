@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 2.6)
 project(Kaguya)
 
+# If you have a C++11 compiler, comment out these lines
 find_package( Boost REQUIRED )
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
-set( Boost_USE_STATIC_LIBS        OFF )
-set( Boost_USE_MULTITHREADED      ON )
-set( Boost_USE_STATIC_RUNTIME     OFF )
-set( BOOST_ALL_DYN_LINK           ON ) # force dynamic linking for all libraries
-# target_link_libraries( ${PROJECT_NAME} ${Boost_LIBRARIES} )
+    INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+    LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
+    set( Boost_USE_STATIC_LIBS        OFF )
+    set( Boost_USE_MULTITHREADED      ON )
+    set( Boost_USE_STATIC_RUNTIME     OFF )
+    set( BOOST_ALL_DYN_LINK           ON )
 
 set( LUA_LIBRARIES lua )
 set( LUA_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rdParty/lua ) # lua5.3
