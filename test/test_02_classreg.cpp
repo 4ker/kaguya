@@ -7,9 +7,11 @@ using namespace kaguya_test_util;
 
 struct ABC
 {
+    // struct members have no attribute like "public", "private"
 	int intmember;
 	std::string stringmember;
 
+    // constructors... for struct
 	ABC() :intmember(0) {}
 	ABC(int a) :intmember(a) { }
 	ABC(const char* a) :intmember(0), stringmember(a) { }
@@ -18,40 +20,27 @@ struct ABC
 	ABC(const std::string& strmem, int intmem) :intmember(intmem), stringmember(strmem) { }
 	ABC(const ABC&src) :intmember(src.intmember), stringmember(src.stringmember) {}
 
-
+    // tzxnote: rhs: right hand side
 	bool operator ==(const ABC& rhs)const {
 		return intmember == rhs.intmember && stringmember == rhs.stringmember;
 	}
 	bool operator <(const ABC& rhs)const {
 		return intmember < rhs.intmember || (intmember == rhs.intmember && stringmember < rhs.stringmember);
 	}
-	bool operator !=(const ABC& rhs)const {
-		return !(*this == rhs);
-	}
-	bool operator >(const ABC& rhs)const {
-		return (rhs < *this);
-	}
-	bool operator >=(const ABC& rhs)const {
-		return !(*this < rhs);
-	}
-	bool operator <=(const ABC& rhs)const {
-		return !(*this > rhs);
-	}
+	bool operator !=(const ABC& rhs)const { return !(*this == rhs); }
+	bool operator >(const ABC& rhs)const { return (rhs < *this); }
+	bool operator >=(const ABC& rhs)const { return !(*this < rhs); }
+    bool operator <=(const ABC& rhs)const { return !(*this > rhs); }
 
-	int getInt() const {
-		return intmember;
-	}
-	void setInt(const int& n) {
-		intmember = n;
-	}
-	std::string getString()const {
-		return stringmember;
-	}
+	int getInt() const { return intmember; }
+	void setInt(const int& n) { intmember = n; }
+	std::string getString()const { return stringmember; }
 	void setString(std::string str) { stringmember = str; }
 
+    // tzxnote: copy, deps on ABC(const ABC&src) :intmember(src.intmember), stringmember(src.stringmember) {}
 	ABC copy()const { return *this; }
-	const ABC& references()const { return *this; }
 	const ABC& const_references()const { return *this; }
+	const ABC& references()const { return *this; }
 	ABC& references() { return *this; }
 	ABC* pointer() { return this; }
 	const ABC* const_pointer()const { return this; }
@@ -60,9 +49,10 @@ struct ABC
 
 KAGUYA_TEST_FUNCTION_DEF(default_constructor)(kaguya::State& state)
 {
-	state["ABC"].setClass(kaguya::UserdataMetatable<ABC>()
-		.setConstructors<ABC()>()
-		);
+    // tzxnote: whta's metatable?
+	state["ABC"].setClass(
+            kaguya::UserdataMetatable<ABC>().setConstructors<ABC()>()
+        );
 
 	TEST_CHECK(state("value = assert(ABC.new())"));
 };
@@ -73,7 +63,11 @@ KAGUYA_TEST_FUNCTION_DEF(int_constructor)(kaguya::State& state)
 		.addFunction("getInt", &ABC::getInt)
 		);
 
-	TEST_CHECK(state("value = assert(ABC.new(32))"));
+	TEST_CHECK(state("value = assert(ABC.now(32))"));
+    // test_02_classreg::int_constructor  (29/123) ...[string "value = assert(ABC.now(32))"]:1: attempt to call a nil value (field 'now')
+failure
+
+
 	TEST_CHECK(state("assert(value:getInt() == 32)"));
 };
 KAGUYA_TEST_FUNCTION_DEF(string_constructor)(kaguya::State& state)
