@@ -1,4 +1,4 @@
-## use `bcp` to pack all boost dep files
+## use [`bcp`](https://github.com/district10/bcp/tree/standalone#0-get-bcp-binary--boost-source-file) to pack all boost dep files
 
 ```bash
 # cd boost source dir
@@ -11,5 +11,5 @@ $ mkdir outputs
 $ bcp boost/function.hpp boost/tuple/tuple.hpp boost/shared_ptr.hpp boost/make_shared.hpp boost/type_traits.hpp boost/static_assert.hpp outputs
 
 $ du outputs/boost
-11.4 MB
+11.7 MB
 ```
