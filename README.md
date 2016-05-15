@@ -2,6 +2,15 @@
 
 C++ binding to Lua
 
+-   The `standalone` branch packed all necessary Boost headers (about 11 MB),
+    and it works on Visual Studio 2010 (terrible support for C++11) without any
+    dependency.
+-   If you just copy all boost headers, it will become
+    <http://whudoc.qiniudn.com/2016/kaguya-with-boost.7z> (6.98 MB). Way to big!
+-   But instead, you use [`bcp`](https://github.com/district10/bcp) to grab out necessary header files,
+    it's <http://whudoc.qiniudn.com/2016/kaguya-standalone.7z> (523 KB, same as
+    the `standalone` branch), it's amazing.
+
 ---
 
 Licensed under [Boost Software License](http://www.boost.org/LICENSE_1_0.txt)
